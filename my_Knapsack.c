@@ -52,7 +52,7 @@ int main() {
             printf("%c ", 'a' + i);
         }
     }
-    printf("\b\b\n"); //remove the trailing comma and space
+    printf("\b\b"); //remove the trailing comma and space
 
     return 0;
 }
