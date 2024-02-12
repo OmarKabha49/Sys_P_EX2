@@ -46,10 +46,10 @@ int main() {
     int max_value = knapSack(weights, values, selected_bool);
 
     printf("Maximum profit: %d\n", max_value);
-    printf("Selected items: ");
+    printf("Selected items:");
     for (int i = 0 ; i < ARR_SIZE;i++) {
         if (selected_bool[i]) {
-            printf("%c ", 'a' + i);
+            printf(" %c", 'a' + i);
         }
     }
     printf("\b\b\n"); //remove the trailing comma and space
