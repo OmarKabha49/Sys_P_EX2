@@ -3,30 +3,43 @@
 #define ARR_SIZE 5
 
 int knapSack(int weights[], int values[], int selected_bool[]) {
-    int i, w;
+    int toItem, w;
     int table[ARR_SIZE + 1][MAX_WEIGHT + 1];
 
-    for (i = 0; i <= ARR_SIZE; i++) {
+
+    //according to algo1 we can fill the table using this  T[toItem,B] = max(T[toItem-1,B], vi + T[toItem-1,B-wi])
+    for (toItem = 0; toItem <= ARR_SIZE; toItem++) {
         for (w = 0; w <= MAX_WEIGHT; w++) {
-            if (i == 0 || w == 0)
-                table[i][w] = 0;
-            else if (weights[i - 1] <= w)
-                table[i][w] = (values[i - 1] + table[i - 1][w - weights[i - 1]] > table[i - 1][w]) ?
-                              (values[i - 1] + table[i - 1][w - weights[i - 1]]) : table[i - 1][w];
-            else
-                table[i][w] = table[i - 1][w];
+            if (toItem == 0 || w == 0) {
+                table[toItem][w] = 0;
+            }
+            else {
+                if (weights[toItem - 1] <= w) {
+                    int newValue = values[toItem - 1] + table[toItem - 1][w - weights[toItem - 1]];
+                    if (newValue > table[toItem - 1][w]) {
+                        table[toItem][w] = newValue;
+                    } else {
+                        table[toItem][w] = table[toItem - 1][w];
+                    }
+                }
+                else {
+                    table[toItem][w] = table[toItem - 1][w];
+                }
+            }
         }
     }
 
+
+
     int res = table[ARR_SIZE][MAX_WEIGHT];
     w = MAX_WEIGHT;
-    for (i = ARR_SIZE; i > 0 && res > 0; i--) {
-        if (res == table[i - 1][w])
+    for (toItem = ARR_SIZE; toItem > 0 && res > 0; toItem--) {
+        if (res == table[toItem - 1][w])
             continue;
         else {
-            selected_bool[i - 1] = 1;
-            res -= values[i - 1];
-            w -= weights[i - 1];
+            w -= weights[toItem - 1];
+            selected_bool[toItem - 1] = 1;
+            res -= values[toItem - 1];
         }
     }
 
